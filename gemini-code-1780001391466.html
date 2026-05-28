@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Portfolio</title>
+    <style>
+        /* CSS Variables for the Vibe */
+        :root {
+            --bg-color: #0d1117;
+            --surface-color: #161b22;
+            --text-main: #e6edf3;
+            --text-muted: #8b949e;
+            --accent-color: #2f81f7; /* Tech Blue */
+            --terminal-green: #3fb950;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+        }
+
+        /* Typography */
+        h1, h2, h3 { font-weight: 600; color: #fff; }
+        .mono { font-family: var(--font-mono); }
+        .text-accent { color: var(--accent-color); }
+        .section-title {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            text-transform: lowercase;
+        }
+        .section-title::before { content: "// "; color: var(--accent-color); }
+
+        /* Layout */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        section { padding: 6rem 0; }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--surface-color);
+        }
+        .nav-links { display: flex; gap: 1.5rem; }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text-main); }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            min-height: 70vh;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(47, 129, 247, 0.1);
+            color: var(--accent-color);
+            border-radius: 999px;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            font-family: var(--font-mono);
+        }
+        .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 1rem; }
+        .hero p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem; }
+
+        /* Terminal Window */
+        .terminal {
+            background-color: #010409;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            overflow: hidden;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+        .terminal-header {
+            background-color: var(--surface-color);
+            padding: 0.5rem 1rem;
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid #30363d;
+        }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+        .terminal-body { padding: 1.5rem; color: var(--text-muted); }
+        .prompt::before { content: "$ "; color: var(--terminal-green); }
+        .cmd { color: var(--text-main); }
+        .output { margin-bottom: 1rem; padding-left: 1rem; border-left: 2px solid #30363d; }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .project-card {
+            background: var(--surface-color);
+            border: 1px solid #30363d;
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+        .project-card h3 { margin-bottom: 0.5rem; }
+        .project-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            color: var(--text-muted);
+        }
+
+        /* Experience Timeline */
+        .timeline { border-left: 2px solid #30363d; margin-left: 1rem; }
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 3rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            box-shadow: 0 0 0 4px var(--bg-color);
+        }
+        .date { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-color); }
+        .role { font-size: 1.25rem; font-weight: 600; color: #fff; margin: 0.25rem 0; }
+        .company { color: var(--text-muted); margin-bottom: 0.75rem; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid var(--surface-color);
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { grid-template-columns: 1fr; gap: 2rem; }
+            .nav-links { display: none; } /* Add a hamburger menu here for production */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav>
+        <div class="logo mono text-accent">your_name.dev</div>
+        <div class="nav-links mono">
+            <a href="#about">about</a>
+            <a href="#projects">projects</a>
+            <a href="#experience">experience</a>
+            <a href="#contact">contact</a>
+        </div>
+    </nav>
+
+    <section class="hero" id="about">
+        <div class="hero-content">
+            <div class="hero-badge">Available for hire</div>
+            <h1>Software <br> Engineer</h1>
+            <p>I build robust, scalable applications. Specializing in full-stack development, API design, and turning complex problems into elegant code.</p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="#projects" style="padding: 0.75rem 1.5rem; background: var(--text-main); color: var(--bg-color); text-decoration: none; border-radius: 4px; font-weight: 600;">View Work</a>
+                <a href="#contact" style="padding: 0.75rem 1.5rem; border: 1px solid #30363d; color: var(--text-main); text-decoration: none; border-radius: 4px; font-weight: 600;">Get in Touch</a>
+            </div>
+        </div>
+
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            <div class="terminal-body">
+                <div class="prompt"><span class="cmd">whoami</span></div>
+                <div class="output">guest_user</div>
+                
+                <div class="prompt"><span class="cmd">cat skills.txt</span></div>
+                <div class="output">
+                    > JavaScript, TypeScript, Python<br>
+                    > React, Next.js, Node.js<br>
+                    > Docker, AWS, PostgreSQL
+                </div>
+
+                <div class="prompt"><span class="cmd">echo $STATUS</span></div>
+                <div class="output">> building the future...</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="section-title">projects</div>
+        <h2>What I've Built</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">A selection of tools and applications.</p>
+        
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3>Nexus Analytics</h3>
+                <p>A real-time dashboard for monitoring distributed server architecture, handling millions of events daily.</p>
+                <div class="tags">
+                    <span class="tag">React</span>
+                    <span class="tag">Node.js</span>
+                    <span class="tag">WebSockets</span>
+                </div>
+            </div>
+            <div class="project-card">
+                <h3>CloudDeploy CLI</h3>
+                <p>A command-line interface tool that simplifies continuous integration and deployment pipelines for microservices.</p>
+                <div class="tags">
+                    <span class="tag">Go</span>
+                    <span class="tag">Docker</span>
+                    <span class="tag">AWS</span>
+                </div>
+            </div>
+            <div class="project-card">
+                <h3>OmniSearch</h3>
+                <p>An AI-powered semantic search engine that indexes internal company documentation for lightning-fast retrieval.</p>
+                <div class="tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">PostgreSQL</span>
+                    <span class="tag">FastAPI</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <div class="section-title">experience</div>
+        <h2>Where I've Worked</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">My professional journey in tech.</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="date">2023 — Present</div>
+                <div class="role">Senior Software Engineer</div>
+                <div class="company">TechNova Inc.</div>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Spearheaded the migration from a monolithic architecture to microservices, reducing deployment times by 40%.</p>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="date">2021 — 2023</div>
+                <div class="role">Full-Stack Developer</div>
+                <div class="company">StartUp Hub</div>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Built and maintained core features for a SaaS platform used by 10,000+ businesses globally.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <p>Let's build something together.</p>
+        <a href="mailto:hello@example.com" style="color: var(--accent-color); text-decoration: none; margin-top: 0.5rem; display: inline-block;">hello@yourdomain.com</a>
+        <p style="margin-top: 2rem; font-size: 0.8rem; color: #484f58;">© 2026 Your Name. All rights reserved.</p>
+    </footer>
+</div>
+
+</body>
+</html>
