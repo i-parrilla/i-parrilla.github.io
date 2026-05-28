@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dev Portfolio</title>
     <style>
-        /* CSS Variables for the Vibe */
+        /* Modern Vercel-esque CSS Variables */
         :root {
-            --bg-color: #0d1117;
-            --surface-color: #161b22;
-            --text-main: #e6edf3;
-            --text-muted: #8b949e;
-            --accent-color: #2f81f7; /* Tech Blue */
-            --terminal-green: #3fb950;
+            --bg-color: #050505;
+            --surface-color: rgba(22, 27, 34, 0.6);
+            --surface-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ededed;
+            --text-muted: #888888;
+            --accent-color: #3b82f6; /* Modern Blue */
+            --terminal-green: #10b981;
+            --glow-color: rgba(59, 130, 246, 0.15);
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
+            --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', Courier, monospace;
         }
 
         * {
@@ -28,18 +30,34 @@
             color: var(--text-main);
             font-family: var(--font-sans);
             line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Background Glow */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, var(--glow-color) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Typography */
-        h1, h2, h3 { font-weight: 600; color: #fff; }
+        h1, h2, h3 { font-weight: 600; color: #fff; letter-spacing: -0.02em; }
         .mono { font-family: var(--font-mono); }
         .text-accent { color: var(--accent-color); }
         .section-title {
             font-family: var(--font-mono);
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             text-transform: lowercase;
+            letter-spacing: 0.05em;
         }
         .section-title::before { content: "// "; color: var(--accent-color); }
 
@@ -57,14 +75,15 @@
             justify-content: space-between;
             align-items: center;
             padding: 2rem 0;
-            border-bottom: 1px solid var(--surface-color);
+            border-bottom: 1px solid var(--surface-border);
+            backdrop-filter: blur(10px);
         }
-        .nav-links { display: flex; gap: 1.5rem; }
+        .nav-links { display: flex; gap: 2rem; }
         .nav-links a {
             color: var(--text-muted);
             text-decoration: none;
             font-size: 0.9rem;
-            transition: color 0.2s;
+            transition: color 0.2s ease;
         }
         .nav-links a:hover { color: var(--text-main); }
 
@@ -76,45 +95,69 @@
             align-items: center;
             min-height: 70vh;
         }
-        .hero-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: rgba(47, 129, 247, 0.1);
-            color: var(--accent-color);
-            border-radius: 999px;
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
-            font-family: var(--font-mono);
+        .hero h1 { 
+            font-size: 3.5rem; 
+            line-height: 1.1; 
+            margin-bottom: 1.5rem; 
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 1rem; }
         .hero p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem; }
+
+        /* Interactive Buttons */
+        .btn-primary {
+            padding: 0.75rem 1.5rem; 
+            background: var(--text-main); 
+            color: var(--bg-color); 
+            text-decoration: none; 
+            border-radius: 6px; 
+            font-weight: 500;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .btn-primary:hover { transform: translateY(-2px); background: #fff; }
+        
+        .btn-secondary {
+            padding: 0.75rem 1.5rem; 
+            border: 1px solid var(--surface-border); 
+            color: var(--text-main); 
+            text-decoration: none; 
+            border-radius: 6px; 
+            font-weight: 500;
+            background: var(--surface-color);
+            backdrop-filter: blur(10px);
+            transition: border-color 0.2s ease;
+        }
+        .btn-secondary:hover { border-color: var(--text-muted); }
 
         /* Terminal Window */
         .terminal {
-            background-color: #010409;
-            border: 1px solid #30363d;
-            border-radius: 8px;
+            background-color: rgba(10, 10, 10, 0.8);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
             overflow: hidden;
             font-family: var(--font-mono);
             font-size: 0.9rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
         }
         .terminal-header {
-            background-color: var(--surface-color);
-            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 0.75rem 1rem;
             display: flex;
             gap: 0.5rem;
-            border-bottom: 1px solid #30363d;
+            border-bottom: 1px solid var(--surface-border);
         }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
         .dot.red { background: #ff5f56; }
         .dot.yellow { background: #ffbd2e; }
         .dot.green { background: #27c93f; }
         .terminal-body { padding: 1.5rem; color: var(--text-muted); }
-        .prompt::before { content: "$ "; color: var(--terminal-green); }
+        .prompt::before { content: "➜ "; color: var(--terminal-green); }
         .cmd { color: var(--text-main); }
-        .output { margin-bottom: 1rem; padding-left: 1rem; border-left: 2px solid #30363d; }
+        .output { margin-bottom: 1.5rem; padding-left: 1.2rem; border-left: 1px solid var(--surface-border); }
 
-        /* Projects Grid */
+        /* Projects Grid (Glassmorphism) */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -122,63 +165,44 @@
         }
         .project-card {
             background: var(--surface-color);
-            border: 1px solid #30363d;
-            padding: 1.5rem;
-            border-radius: 8px;
-            transition: transform 0.2s, border-color 0.2s;
+            border: 1px solid var(--surface-border);
+            padding: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
         .project-card:hover {
             transform: translateY(-5px);
-            border-color: var(--accent-color);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .project-card h3 { margin-bottom: 0.5rem; }
+        .project-card h3 { margin-bottom: 0.75rem; font-size: 1.25rem; }
         .project-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
         .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
         .tag {
             font-family: var(--font-mono);
             font-size: 0.75rem;
-            padding: 0.2rem 0.5rem;
-            background: rgba(255,255,255,0.05);
-            border-radius: 4px;
-            color: var(--text-muted);
+            padding: 0.25rem 0.6rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--surface-border);
+            border-radius: 999px; /* Pill shape */
+            color: var(--text-main);
         }
-
-        /* Experience Timeline */
-        .timeline { border-left: 2px solid #30363d; margin-left: 1rem; }
-        .timeline-item {
-            position: relative;
-            padding-left: 2rem;
-            margin-bottom: 3rem;
-        }
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -6px;
-            top: 6px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--accent-color);
-            box-shadow: 0 0 0 4px var(--bg-color);
-        }
-        .date { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-color); }
-        .role { font-size: 1.25rem; font-weight: 600; color: #fff; margin: 0.25rem 0; }
-        .company { color: var(--text-muted); margin-bottom: 0.75rem; }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 3rem 0;
-            border-top: 1px solid var(--surface-color);
+            padding: 4rem 0;
+            border-top: 1px solid var(--surface-border);
             color: var(--text-muted);
-            font-family: var(--font-mono);
             font-size: 0.9rem;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             .hero { grid-template-columns: 1fr; gap: 2rem; }
-            .nav-links { display: none; } /* Add a hamburger menu here for production */
+            .nav-links { display: none; }
+            body::before { width: 100vw; height: 100vw; }
         }
     </style>
 </head>
@@ -190,19 +214,17 @@
         <div class="nav-links mono">
             <a href="#about">about</a>
             <a href="#projects">projects</a>
-            <a href="#experience">experience</a>
             <a href="#contact">contact</a>
         </div>
     </nav>
 
     <section class="hero" id="about">
         <div class="hero-content">
-            <div class="hero-badge">Available for hire</div>
             <h1>Software <br> Engineer</h1>
             <p>I build robust, scalable applications. Specializing in full-stack development, API design, and turning complex problems into elegant code.</p>
             <div style="display: flex; gap: 1rem;">
-                <a href="#projects" style="padding: 0.75rem 1.5rem; background: var(--text-main); color: var(--bg-color); text-decoration: none; border-radius: 4px; font-weight: 600;">View Work</a>
-                <a href="#contact" style="padding: 0.75rem 1.5rem; border: 1px solid #30363d; color: var(--text-main); text-decoration: none; border-radius: 4px; font-weight: 600;">Get in Touch</a>
+                <a href="#projects" class="btn-primary">View Work</a>
+                <a href="#contact" class="btn-secondary">Get in Touch</a>
             </div>
         </div>
 
@@ -214,25 +236,25 @@
             </div>
             <div class="terminal-body">
                 <div class="prompt"><span class="cmd">whoami</span></div>
-                <div class="output">guest_user</div>
+                <div class="output">creator</div>
                 
-                <div class="prompt"><span class="cmd">cat skills.txt</span></div>
+                <div class="prompt"><span class="cmd">cat stack.txt</span></div>
                 <div class="output">
-                    > JavaScript, TypeScript, Python<br>
-                    > React, Next.js, Node.js<br>
-                    > Docker, AWS, PostgreSQL
+                    JavaScript, TypeScript, Python<br>
+                    React, Next.js, Node.js<br>
+                    PostgreSQL, TailwindCSS
                 </div>
 
-                <div class="prompt"><span class="cmd">echo $STATUS</span></div>
-                <div class="output">> building the future...</div>
+                <div class="prompt"><span class="cmd">./run_ide.sh</span></div>
+                <div class="output">compiling ideas... success.</div>
             </div>
         </div>
     </section>
 
     <section id="projects">
         <div class="section-title">projects</div>
-        <h2>What I've Built</h2>
-        <p style="color: var(--text-muted); margin-bottom: 2rem;">A selection of tools and applications.</p>
+        <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">What I've Built</h2>
+        <p style="color: var(--text-muted); margin-bottom: 3rem;">A selection of tools and applications.</p>
         
         <div class="projects-grid">
             <div class="project-card">
@@ -265,32 +287,10 @@
         </div>
     </section>
 
-    <section id="experience">
-        <div class="section-title">experience</div>
-        <h2>Where I've Worked</h2>
-        <p style="color: var(--text-muted); margin-bottom: 2rem;">My professional journey in tech.</p>
-
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="date">2023 — Present</div>
-                <div class="role">Senior Software Engineer</div>
-                <div class="company">TechNova Inc.</div>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">Spearheaded the migration from a monolithic architecture to microservices, reducing deployment times by 40%.</p>
-            </div>
-            
-            <div class="timeline-item">
-                <div class="date">2021 — 2023</div>
-                <div class="role">Full-Stack Developer</div>
-                <div class="company">StartUp Hub</div>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">Built and maintained core features for a SaaS platform used by 10,000+ businesses globally.</p>
-            </div>
-        </div>
-    </section>
-
     <footer id="contact">
-        <p>Let's build something together.</p>
-        <a href="mailto:hello@example.com" style="color: var(--accent-color); text-decoration: none; margin-top: 0.5rem; display: inline-block;">hello@yourdomain.com</a>
-        <p style="margin-top: 2rem; font-size: 0.8rem; color: #484f58;">© 2026 Your Name. All rights reserved.</p>
+        <h2 style="margin-bottom: 1rem;">Let's build something.</h2>
+        <a href="mailto:hello@yourdomain.com" style="color: var(--text-main); text-decoration: none; border-bottom: 1px solid var(--accent-color); padding-bottom: 2px;">hello@yourdomain.com</a>
+        <p style="margin-top: 3rem; font-family: var(--font-mono); font-size: 0.8rem; color: #444;">© 2026 Your Name.</p>
     </footer>
 </div>
 
