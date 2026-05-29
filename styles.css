@@ -175,7 +175,9 @@ h1 {
     cursor: pointer;
 }
 
-.skill-circle svg {
+/* Updated to target image tags */
+.skill-circle svg,
+.skill-circle img {
     width: 32px;
     height: 32px;
     fill: var(--text-main);
@@ -189,7 +191,9 @@ h1 {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
-.skill-circle:hover svg {
+/* Updated to target image tags */
+.skill-circle:hover svg,
+.skill-circle:hover img {
     transform: scale(1.1);
 }
 
